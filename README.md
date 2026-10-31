@@ -10,10 +10,9 @@ Live: <https://portfoliioo-xi.vercel.app/>
 
 Add screenshots of the site at these paths:
 
-- `docs/screenshots/home.png`
-- `docs/screenshots/certifications.png`
+![Home page](docs/screenshots/home.png)
 
-The screenshots are placeholders; add the image files to the repository when available.
+![Certifications page](docs/screenshots/certifications.png)
 
 ## Features
 
