@@ -4,7 +4,7 @@ A personal portfolio presenting selected projects, work experience, education, a
 
 ## Live site
 
-Live: <add your Vercel URL>
+Live: <add https://portfoliioo-xi.vercel.app/>
 
 ## Screenshots
 
@@ -142,9 +142,9 @@ build output directory.
 
 ## Contact
 
-- Email: <add your email>
-- LinkedIn: <add your LinkedIn URL>
-- GitHub: <add your GitHub URL>
+- Email: <keshavgupta072004@gmail.com>
+- LinkedIn: <https://www.linkedin.com/in/keshav07/>
+- GitHub: <https://github.com/Keshav062004/>
 
 Replace these placeholders with the contact links you want to publish.
 
