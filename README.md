@@ -30,6 +30,4 @@ npm run dev
 - English and German translations are stored in the `en/` and `de/` folders.
 - Shared project tags are defined in `src/components/tagVariants.ts`.
 
-## License attribution
 
-The original portfolio template was created by David Heckhoff: [david-hckh.com](https://david-hckh.com). This attribution is retained as required by the project's license. See [license.md](./license.md) for the applicable terms.
