@@ -75,12 +75,25 @@ const showAttribution = import.meta.env.VITE_SHOW_ATTRIBUTION !== "false";
           </p>
           <Clickable renderAs="div">
             <Link
-              href="https://david-hckh.com"
+              href="https://portfoliioo-xi.vercel.app/"
               class="footer-link children-unclickable"
               external
               data-cursor="circle-white"
               data-hoversound="hover"
               >Keshav Gupta</Link
+            >
+          </Clickable>
+        </div>
+        <div class="footer-credits-built">
+          <p>{{ t("original-template-by") }}</p>
+          <Clickable renderAs="div">
+            <Link
+              href="https://david-hckh.com"
+              class="footer-link children-unclickable"
+              external
+              data-cursor="circle-white"
+              data-hoversound="hover"
+              >David Heckhoff</Link
             >
           </Clickable>
         </div>

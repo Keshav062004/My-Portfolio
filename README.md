@@ -1,42 +1,35 @@
-# Portfolio (2025)
+# Keshav Gupta — Portfolio
 
-Personal portfolio site: project case studies, lightweight 3D and shader demos, bilingual copy (English and German).
+Personal portfolio featuring selected software projects, certifications, and contact information.
 
-Built with **Vue 3**, **TypeScript**, and **Vite**. Motion via **GSAP** and **Lenis**, 3D via **three.js**, audio via **Howler**. GLSL is compiled through **vite-plugin-glsl**.
+- **Name:** Keshav Gupta
+- **Email:** keshavgupta072004@gmail.com
+- **Website:** [portfoliioo-xi.vercel.app](https://portfoliioo-xi.vercel.app/)
+
+Built with **Vue 3**, **TypeScript**, and **Vite**. Animation uses **GSAP** and **Lenis**, 3D graphics use **three.js**, audio uses **Howler**, and GLSL is compiled through **vite-plugin-glsl**.
+
+## Development
+
+```sh
+npm install
+npm run dev
+```
 
 ## Scripts
 
-| Command        | Description                          |
-| -------------- | ------------------------------------ |
-| `npm run dev`   | Dev server on port **3000** (`strictPort`) |
-| `npm run build` | `vue-tsc` then production bundle to `dist/` |
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite development server on port 3000 |
+| `npm run build` | Type-check and create the production bundle in `dist/` |
 | `npm run preview` | Serve the production build locally |
-| `npm run typecheck` | Typecheck only (`vue-tsc -b`) |
+| `npm run typecheck` | Run the TypeScript/Vue type check |
 
-## Content
+## Project content
 
-- **Projects**: `src/content/projects/{en,de}/<slug>.ts` — copy, tags, media, links. Slugs must align with `projectIds` in `src/content/projects/index.ts`.
-- **Previews / listing**: `src/content/projects/previews/`.
-- **Tags**: variants and labels live in `src/components/tagVariants.ts` (used by `Tag.vue` and content types).
+- Project case studies and previews are maintained under `src/content/projects/`.
+- English and German translations are stored in the `en/` and `de/` folders.
+- Shared project tags are defined in `src/components/tagVariants.ts`.
 
-## Stack (high level)
+## License attribution
 
-- Vue 3 (`<script setup>`), SCSS with shared mixins (`src/assets/styles/`)
-- i18n helpers under `src/i18n/`
-- WebGL / GLSL under `src/three/` where applicable
-
-## Credits & Attribution
-
-This project was created and designed by David Heckhoff.
-
-If you use this project or substantial parts of its source code as a base for your own portfolio or work, attribution must be preserved.
-
-Please keep:
-
-- existing credit comments in the source code
-- this attribution section in the README
-- a visible reference to the original project/repository in derivative works
-
-
-
-Commercial reuse or redistribution of substantial portions of this project without permission is prohibited.
+The original portfolio template was created by David Heckhoff: [david-hckh.com](https://david-hckh.com). This attribution is retained as required by the project's license. See [license.md](./license.md) for the applicable terms.
