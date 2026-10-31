@@ -4,7 +4,7 @@ A personal portfolio presenting selected projects, work experience, education, a
 
 ## Live site
 
-Live: <add https://portfoliioo-xi.vercel.app/>
+Live: <https://portfoliioo-xi.vercel.app/>
 
 ## Screenshots
 
