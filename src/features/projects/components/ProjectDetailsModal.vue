@@ -3,13 +3,19 @@ import { onBeforeUnmount, watch } from "vue";
 import { lenis } from "../../../composables/useScroll";
 
 interface ProjectScreenshot {
-  src?: string;
+  src: string;
   label: string;
   caption: string;
 }
 
+interface ProjectArchitecture {
+  nodes: { title: string; subtitle: string; icon: string }[];
+  secondary: { label: string; icon: string }[];
+}
+
 interface ProjectDetail {
   id: number;
+  visual: "compiler" | "health" | "security" | "finance";
   title: string;
   subtitle: string;
   type: string;
@@ -21,8 +27,10 @@ interface ProjectDetail {
   features: string[];
   highlights: { title: string; text: string }[];
   next: string[];
+  whatsNext?: { title: string; description: string }[];
   screenshots: ProjectScreenshot[];
   accent: "orange" | "blue" | "red";
+  architecture: ProjectArchitecture;
 }
 
 const props = defineProps<{
@@ -38,32 +46,7 @@ const emit = defineEmits<{
    REAL PROJECT SCREENSHOTS
 ========================================================= */
 
-const projectScreenshotImages: Record<number, string[]> = {
-  1: [
-    "/project-images/complex_editor.png",
-    "/project-images/complex_execution.png",
-    "/project-images/complex_developer_tools.png",
-  ],
-  2: [
-    "/project-images/mediconnect_homepage.png",
-    "/project-images/mediconnect_login.png",
-    "/project-images/mediconnect_dashboard.png",
-  ],
-  3: [
-    "/project-images/phishguard_detection.png",
-    "/project-images/phishguard_phishing_result.png",
-    "/project-images/phishguard_scan_report.png",
-  ],
-};
-
-const resolveScreenshotSrc = (
-  shot: ProjectScreenshot,
-  index: number,
-): string | undefined => {
-  if (shot.src) return shot.src;
-  if (!props.project) return undefined;
-  return projectScreenshotImages[props.project.id]?.[index];
-};
+const resolveScreenshotSrc = (shot: ProjectScreenshot): string => shot.src;
 
 /* =========================================================
    ICON SYSTEM
@@ -112,8 +95,12 @@ function techIcon(tech: string): string {
   if (t.includes("docker")) return "docker";
   if (t.includes("github")) return "github";
   if (t.includes("flask")) return "server";
+  if (t.includes("fastapi")) return "api";
   if (t.includes("python")) return "code";
+  if (t.includes("power bi")) return "layers";
+  if (t.includes("pandas")) return "database";
   if (t.includes("mysql") || t.includes("postgres") || t.includes("database")) return "database";
+  if (t.includes("sql")) return "database";
   if (t.includes("cloud")) return "cloud";
   if (t.includes("jwt") || t.includes("auth")) return "lock";
   if (t.includes("api")) return "api";
@@ -123,11 +110,14 @@ function techIcon(tech: string): string {
 
 function featureIcon(index: number): string {
   if (!props.project) return "star";
-  if (props.project.id === 1) {
+  if (props.project.visual === "compiler") {
     return ["code", "play", "terminal", "copy", "input"][index] || "code";
   }
-  if (props.project.id === 2) {
+  if (props.project.visual === "health") {
     return ["lock", "api", "cloud", "database", "eye"][index] || "layers";
+  }
+  if (props.project.visual === "finance") {
+    return ["database", "layers", "api", "eye"][index] || "database";
   }
   return ["shield", "scan", "code", "database", "eye"][index] || "shield";
 }
@@ -136,19 +126,12 @@ function highlightIcon(title: string, index: number): string {
   const t = title.toLowerCase();
   if (t.includes("editor") || t.includes("code")) return "code";
   if (t.includes("execution") || t.includes("run")) return "play";
-  if (t.includes("security") || t.includes("phish") || t.includes("detect")) return "shield";
+  if (t.includes("security") || t.includes("detect")) return "shield";
   if (t.includes("auth") || t.includes("secure")) return "lock";
   if (t.includes("database") || t.includes("data")) return "database";
   if (t.includes("api")) return "api";
   if (t.includes("cloud")) return "cloud";
   return ["layers", "server", "scan"][index % 3] || "layers";
-}
-
-function architectureIcon(position: number): string {
-  if (!props.project) return "layers";
-  if (props.project.id === 1) return ["react", "node", "api"][position] || "layers";
-  if (props.project.id === 2) return ["react", "node", "database"][position] || "layers";
-  return ["eye", "server", "shield"][position] || "layers";
 }
 
 /* =========================================================
@@ -274,14 +257,14 @@ onBeforeUnmount(() => {
                       <span>{{ project.title }}</span>
                     </div>
 
-                    <div v-if="project.id === 1" class="hero-code">
+                    <div v-if="project.visual === 'compiler'" class="hero-code">
                       <span>function <b>compile</b>(code) {</span>
                       <span>&nbsp;&nbsp;return execute(code);</span>
                       <span>}</span>
                       <em>✓ Build successful</em>
                     </div>
 
-                    <div v-else-if="project.id === 2" class="hero-health">
+                    <div v-else-if="project.visual === 'health'" class="hero-health">
                       <div class="health-nav">
                         <b>♥</b><i></i><i></i><i></i>
                       </div>
@@ -293,6 +276,13 @@ onBeforeUnmount(() => {
                           <span>Doctors <b>82</b></span>
                         </div>
                       </div>
+                    </div>
+
+                    <div v-else-if="project.visual === 'finance'" class="hero-security hero-finance">
+                      <div class="security-label">NAV ANALYSIS</div>
+                      <strong>CAGR · Sharpe · Drawdown</strong>
+                      <div class="finance-hero-meta">16 schemes · 42K+ NAV rows · 2013–2026</div>
+                      <em>Educational use only</em>
                     </div>
 
                     <div v-else class="hero-security">
@@ -403,15 +393,15 @@ onBeforeUnmount(() => {
                   >
                     <div class="details-media-visual">
                       <img
-                        v-if="resolveScreenshotSrc(shot, index)"
-                        :src="resolveScreenshotSrc(shot, index)"
+                        v-if="resolveScreenshotSrc(shot)"
+                        :src="resolveScreenshotSrc(shot)"
                         :alt="`${project.title} — ${shot.label}`"
                         loading="lazy"
                         decoding="async"
                       />
 
                       <div
-                        v-else-if="project.id === 3"
+                        v-else-if="project.visual === 'security'"
                         class="mock-security"
                       >
                         <div class="mock-security-top">
@@ -508,101 +498,49 @@ onBeforeUnmount(() => {
                 </div>
 
                 <div class="architecture">
-                  <div class="architecture-node">
-                    <span class="architecture-icon">
+                  <template
+                    v-for="(node, index) in project.architecture.nodes"
+                    :key="node.title"
+                  >
+                    <div
+                      class="architecture-node"
+                      :class="{ 'architecture-node-accent': index === 1 }"
+                    >
+                      <span class="architecture-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path :d="iconPath(node.icon)" />
+                        </svg>
+                      </span>
+                      <strong>{{ node.title }}</strong>
+                      <small>{{ node.subtitle }}</small>
+                    </div>
+
+                    <div
+                      v-if="index < project.architecture.nodes.length - 1"
+                      class="architecture-arrow"
+                    >
                       <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path :d="iconPath(architectureIcon(0))" />
+                        <path :d="iconPath('arrow')" />
                       </svg>
-                    </span>
-                    <strong>
-                      {{
-                        project.id === 1
-                          ? "React Client"
-                          : project.id === 2
-                            ? "React App"
-                            : "Browser"
-                      }}
-                    </strong>
-                    <small>Frontend</small>
-                  </div>
-
-                  <div class="architecture-arrow">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path :d="iconPath('arrow')" />
-                    </svg>
-                  </div>
-
-                  <div class="architecture-node architecture-node-accent">
-                    <span class="architecture-icon">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path :d="iconPath(architectureIcon(1))" />
-                      </svg>
-                    </span>
-                    <strong>
-                      {{ project.id === 3 ? "Flask" : "Node / Express" }}
-                    </strong>
-                    <small>Application API</small>
-                  </div>
-
-                  <div class="architecture-arrow">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path :d="iconPath('arrow')" />
-                    </svg>
-                  </div>
-
-                  <div class="architecture-node">
-                    <span class="architecture-icon">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path :d="iconPath(architectureIcon(2))" />
-                      </svg>
-                    </span>
-                    <strong>
-                      {{
-                        project.id === 1
-                          ? "Execution API"
-                          : project.id === 2
-                            ? "PostgreSQL"
-                            : "ML Model"
-                      }}
-                    </strong>
-                    <small>
-                      {{
-                        project.id === 3
-                          ? "phishing.pkl"
-                          : "Data / Services"
-                      }}
-                    </small>
-                  </div>
+                    </div>
+                  </template>
                 </div>
 
                 <div
-                  v-if="project.id === 2"
+                  v-if="project.architecture.secondary.length"
                   class="architecture-secondary"
                 >
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('lock')" /></svg></i>JWT Auth</span>
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('database')" /></svg></i>Prisma ORM</span>
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('cloud')" /></svg></i>Cloudinary</span>
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('layers')" /></svg></i>Role-based dashboards</span>
-                </div>
-
-                <div
-                  v-if="project.id === 1"
-                  class="architecture-secondary"
-                >
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('code')" /></svg></i>Ace Editor</span>
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('play')" /></svg></i>Remote execution</span>
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('input')" /></svg></i>stdin / stdout</span>
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('download')" /></svg></i>Copy / Download</span>
-                </div>
-
-                <div
-                  v-if="project.id === 3"
-                  class="architecture-secondary"
-                >
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('scan')" /></svg></i>URL cleaning</span>
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('layers')" /></svg></i>Vectorizer</span>
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('shield')" /></svg></i>Classifier</span>
-                  <span><i><svg viewBox="0 0 24 24"><path :d="iconPath('server')" /></svg></i>Flask template</span>
+                  <span
+                    v-for="item in project.architecture.secondary"
+                    :key="item.label"
+                  >
+                    <i>
+                      <svg viewBox="0 0 24 24">
+                        <path :d="iconPath(item.icon)" />
+                      </svg>
+                    </i>
+                    {{ item.label }}
+                  </span>
                 </div>
               </section>
 
@@ -616,7 +554,24 @@ onBeforeUnmount(() => {
                   <h3>What's Next</h3>
                 </div>
 
-                <ul>
+                <div
+                  v-if="project.whatsNext?.length"
+                  class="whats-next-grid"
+                >
+                  <article
+                    v-for="(item, index) in project.whatsNext"
+                    :key="item.title"
+                    class="whats-next-card"
+                  >
+                    <span class="whats-next-number">
+                      {{ String(index + 1).padStart(2, "0") }}
+                    </span>
+                    <h4>{{ item.title }}</h4>
+                    <p>{{ item.description }}</p>
+                  </article>
+                </div>
+
+                <ul v-else-if="project.next.length">
                   <li
                     v-for="item in project.next"
                     :key="item"
@@ -730,8 +685,8 @@ onBeforeUnmount(() => {
   top: 17px;
   right: 19px;
   z-index: 10;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border: 1px solid rgba(80, 60, 35, 0.16);
   border-radius: 50%;
   background: rgba(255, 250, 241, 0.88);
@@ -809,6 +764,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 10px;
   min-width: 145px;
+  min-height: 44px;
   padding: 12px 17px;
   border-radius: 11px;
   font-size: 13px;
@@ -984,6 +940,34 @@ onBeforeUnmount(() => {
     ),
     #171a1d;
   border-radius: 10px;
+}
+
+.hero-finance {
+  background:
+    radial-gradient(
+      circle at 75% 20%,
+      rgba(242, 123, 22, 0.24),
+      transparent 34%
+    ),
+    #171a1d;
+}
+
+.hero-finance .security-label {
+  color: #f27b16;
+}
+
+.finance-hero-meta {
+  margin-top: 20px;
+  padding: 11px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cfd7e0;
+  font: 10px monospace;
+}
+
+.hero-finance em {
+  background: color-mix(in srgb, #f27b16 14%, transparent);
+  color: #ffad5c;
 }
 
 .security-label {
@@ -1671,6 +1655,50 @@ onBeforeUnmount(() => {
   padding: 0;
   margin: 0 0 30px;
   list-style: none;
+}
+
+.whats-next-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 13px;
+  margin-bottom: 30px;
+}
+
+.whats-next-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.38);
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.whats-next-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  box-shadow: 0 16px 32px rgba(70, 50, 25, 0.08);
+}
+
+.whats-next-number {
+  color: var(--accent);
+  font: 800 10px/1 monospace;
+  letter-spacing: 0.08em;
+}
+
+.whats-next-card h4 {
+  margin: 11px 0 6px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.whats-next-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .details-next li {

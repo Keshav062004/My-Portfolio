@@ -6,10 +6,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 /* =========================================================
-   ALL 32 CERTIFICATES
+   ALL 33 CERTIFICATES
 ========================================================= */
 
 const certifications = [
+  {
+    name: "Data Analytics Job Simulation",
+    issuer: "Deloitte",
+    date: "Oct 2026",
+    icon: "/certificate-icons/deloitte.png",
+    pdf: "/certificates/deloitte-data-analytics.pdf",
+  },
   {
     name: "AI for Scientific Research",
     issuer: "Coursera",
@@ -585,7 +592,7 @@ onUnmounted(() => {
     </div>
 
     <!-- =====================================================
-         ALL 32 CERTIFICATES
+         ALL 33 CERTIFICATES
     ====================================================== -->
 
     <section class="certificates-grid">
@@ -912,7 +919,7 @@ onUnmounted(() => {
   gap: 8px;
 
   min-width: 92px;
-  height: 42px;
+  height: 44px;
   padding: 0 17px;
 
   border: 1px solid rgba(255, 138, 0, 0.28);
@@ -1251,6 +1258,8 @@ onUnmounted(() => {
 }
 
 .certificate-filter {
+  min-width: 44px;
+  min-height: 44px;
   padding:
     9px
     15px;
@@ -1709,6 +1718,7 @@ onUnmounted(() => {
   gap: 7px;
 
   padding: 0;
+  min-height: 44px;
 
   border: 0;
 
@@ -2011,8 +2021,9 @@ onUnmounted(() => {
 }
 
 .certificate-viewer-control {
-  width: 38px;
-  height: 34px;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
 
   display: flex;
 
@@ -2266,9 +2277,9 @@ onUnmounted(() => {
     top: 16px;
     right: 16px;
 
-    min-width: 42px;
-    width: 42px;
-    height: 42px;
+    min-width: 44px;
+    width: 44px;
+    height: 44px;
     padding: 0;
 
     border-radius: 50%;
@@ -2308,6 +2319,7 @@ onUnmounted(() => {
   }
 
   .certificate-filter {
+    min-height: 44px;
     font-size: 11px;
 
     padding:
@@ -2336,9 +2348,9 @@ onUnmounted(() => {
   }
 
   .certificate-viewer-control {
-    width: 34px;
-
-    height: 32px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
   }
 
   .certificate-minimized-bar {
@@ -2391,8 +2403,9 @@ onUnmounted(() => {
   }
 
   .certificate-viewer-control {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
   }
 
   .certificate-pdf-frame {

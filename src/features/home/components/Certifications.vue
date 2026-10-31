@@ -11,6 +11,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 const certifications = [
   {
+    name: "Data Analytics Job Simulation",
+    issuer: "Deloitte",
+    date: "Oct 2026",
+    icon: "/certificate-icons/deloitte.png",
+    pdf: "/certificates/deloitte-data-analytics.pdf",
+  },
+  {
     name: "AWS Partner: Sales Accreditation",
     issuer: "Amazon Web Services",
     date: "Dec 2025",
@@ -45,14 +52,15 @@ const certifications = [
     icon: "/certificate-icons/ibm.png",
     pdf: "/certificates/ibm-devops.pdf",
   },
-  {
-    name: "SAP Professional Fundamentals",
-    issuer: "SAP",
-    date: "Oct 2025",
-    icon: "/certificate-icons/sap.png",
-    pdf: "/certificates/sap.pdf",
-  },
 ];
+
+const deloitteIconFailed = ref(false);
+
+const handleCertificateIconError = (name: string) => {
+  if (name === "Data Analytics Job Simulation") {
+    deloitteIconFailed.value = true;
+  }
+};
 
 /* =========================================================
    VIEW ALL CREDENTIALS
@@ -445,10 +453,19 @@ onUnmounted(() => {
                 class="certification-icon"
               >
                 <img
+                  v-if="cert.name !== 'Data Analytics Job Simulation' || !deloitteIconFailed"
                   :src="cert.icon"
                   :alt="`${cert.issuer} logo`"
                   class="certification-logo"
+                  @error="handleCertificateIconError(cert.name)"
                 />
+                <span
+                  v-else
+                  class="certification-logo-fallback"
+                  aria-label="Deloitte"
+                >
+                  D
+                </span>
               </div>
 
               <h3>
@@ -1206,6 +1223,18 @@ onUnmounted(() => {
   display: block;
 }
 
+.certification-logo-fallback {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #292622;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 24px;
+  font-weight: 800;
+}
+
 .certification-card h3 {
   margin: 0;
 
@@ -1277,6 +1306,7 @@ onUnmounted(() => {
   justify-content: space-between;
 
   width: 100%;
+  min-height: 44px;
 
   margin-top: 14px;
   padding: 0;
@@ -2642,8 +2672,9 @@ onUnmounted(() => {
   }
 
   .certificate-viewer-control {
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
   }
 
   .certificate-minimized-bar {
@@ -2683,9 +2714,9 @@ onUnmounted(() => {
   }
 
   .certificate-viewer-control {
-    width: 40px;
-    min-width: 40px;
-    height: 40px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
   }
 
   .certificate-pdf-frame {

@@ -6,6 +6,10 @@ Personal portfolio featuring selected software projects, certifications, and con
 - **Email:** keshavgupta072004@gmail.com
 - **Website:** [portfoliioo-xi.vercel.app](https://portfoliioo-xi.vercel.app/)
 
+## License attribution
+
+The original portfolio template was created by David Heckhoff: [david-hckh.com](https://david-hckh.com). This attribution is retained as required by the project's license. See [license.md](./license.md) for the applicable terms.
+
 Built with **Vue 3**, **TypeScript**, and **Vite**. Animation uses **GSAP** and **Lenis**, 3D graphics use **three.js**, audio uses **Howler**, and GLSL is compiled through **vite-plugin-glsl**.
 
 ## Development
@@ -29,7 +33,3 @@ npm run dev
 - Project case studies and previews are maintained under `src/content/projects/`.
 - English and German translations are stored in the `en/` and `de/` folders.
 - Shared project tags are defined in `src/components/tagVariants.ts`.
-
-## License attribution
-
-The original portfolio template was created by David Heckhoff: [david-hckh.com](https://david-hckh.com). This attribution is retained as required by the project's license. See [license.md](./license.md) for the applicable terms.

@@ -187,6 +187,9 @@ const showAttribution = import.meta.env.VITE_SHOW_ATTRIBUTION !== "false";
   }
 
   &-link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
     font-weight: 700;
   }
 

@@ -886,8 +886,8 @@ onUnmounted(() => mobileSectionObserver?.disconnect());
     grid-row: 1;
     z-index: 3;
     display: flex;
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     padding: 10px 9px;
     flex-direction: column;
     justify-content: center;
@@ -931,6 +931,7 @@ onUnmounted(() => mobileSectionObserver?.disconnect());
 
   .mobile-section-menu button {
     flex: 0 0 auto;
+    min-height: 44px;
     padding: 10px 12px;
     border: 0;
     background: transparent;
@@ -948,7 +949,8 @@ onUnmounted(() => mobileSectionObserver?.disconnect());
     width: 78px;
     min-width: 78px;
     max-width: 78px;
-    height: 40px;
+    height: 44px;
+    min-height: 44px;
     padding: 0 9px;
     gap: 4px;
     font-size: 10px;
@@ -967,8 +969,8 @@ onUnmounted(() => mobileSectionObserver?.disconnect());
   }
 
   .header-sounds-toggle :deep(button) {
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
   }
 
   .header-logo-text {
@@ -993,8 +995,8 @@ onUnmounted(() => mobileSectionObserver?.disconnect());
     }
 
     .header-sounds-toggle :deep(button) {
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
     }
 
     .header-right {

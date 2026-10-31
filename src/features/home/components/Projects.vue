@@ -36,19 +36,25 @@ type Project = {
   visual:
     | "compiler"
     | "health"
-    | "security";
+    | "security"
+    | "finance";
+  architecture: {
+    nodes: { title: string; subtitle: string; icon: string }[];
+    secondary: { label: string; icon: string }[];
+  };
   stack: string[];
   github?: string;
   overview: string;
   features: string[];
   highlights: { title: string; text: string }[];
   next: string[];
-  screenshots: { src?: string; label: string; caption: string }[];
+  whatsNext?: { title: string; description: string }[];
+  screenshots: { src: string; label: string; caption: string }[];
 };
 
 const projects: Project[] = [
   {
-    id: 1,
+    id: 3,
     category: "Web Applications",
     type: "FULL STACK",
     title: "CompileX",
@@ -66,6 +72,19 @@ const projects: Project[] = [
     ],
     accent: "orange",
     visual: "compiler",
+    architecture: {
+      nodes: [
+        { title: "React Client", subtitle: "Frontend", icon: "react" },
+        { title: "Node / Express", subtitle: "Application API", icon: "node" },
+        { title: "Execution API", subtitle: "Data / Services", icon: "api" },
+      ],
+      secondary: [
+        { label: "Ace Editor", icon: "code" },
+        { label: "Remote execution", icon: "play" },
+        { label: "stdin / stdout", icon: "input" },
+        { label: "Copy / Download", icon: "download" },
+      ],
+    },
     stack: ["React", "Node.js", "Express.js", "MongoDB", "WebSockets", "Docker", "GitHub Actions"],
     overview:
       "CompileX is a browser-based coding environment built around a familiar editor workflow. The supplied project supports C, C++, Java, Python, Go and JavaScript, with syntax highlighting, live code editing, remote execution, input/output, copy and download actions.",
@@ -106,7 +125,7 @@ const projects: Project[] = [
   },
 
   {
-    id: 2,
+    id: 1,
     category: "Healthcare",
     type: "HEALTHCARE",
     title: "MediConnect",
@@ -124,6 +143,19 @@ const projects: Project[] = [
     ],
     accent: "blue",
     visual: "health",
+    architecture: {
+      nodes: [
+        { title: "React App", subtitle: "Frontend", icon: "react" },
+        { title: "Node / Express", subtitle: "Application API", icon: "node" },
+        { title: "PostgreSQL", subtitle: "Data / Services", icon: "database" },
+      ],
+      secondary: [
+        { label: "JWT Auth", icon: "lock" },
+        { label: "Prisma ORM", icon: "database" },
+        { label: "Cloudinary", icon: "cloud" },
+        { label: "Role-based dashboards", icon: "layers" },
+      ],
+    },
     stack: ["React", "Redux Toolkit", "Node.js", "Express.js", "Prisma", "PostgreSQL", "JWT", "Cloudinary"],
     overview:
       "MediConnect is a full-stack healthcare platform with separate patient, doctor and admin workflows. The supplied codebase includes authentication, doctor discovery, appointments, schedules, prescriptions, medicines, reviews, favourites, blogs, contact pages and administrative dashboards.",
@@ -164,7 +196,7 @@ const projects: Project[] = [
   },
 
   {
-    id: 3,
+    id: 4,
     category: "Security",
     type: "AI / SECURITY",
     title: "PhishGuard",
@@ -181,6 +213,19 @@ const projects: Project[] = [
     ],
     accent: "red",
     visual: "security",
+    architecture: {
+      nodes: [
+        { title: "Browser", subtitle: "Frontend", icon: "eye" },
+        { title: "Flask", subtitle: "Application API", icon: "server" },
+        { title: "ML Model", subtitle: "phishing.pkl", icon: "shield" },
+      ],
+      secondary: [
+        { label: "URL cleaning", icon: "scan" },
+        { label: "Vectorizer", icon: "layers" },
+        { label: "Classifier", icon: "shield" },
+        { label: "Flask template", icon: "server" },
+      ],
+    },
     stack: ["Python", "Flask", "Scikit-learn", "Pandas", "NumPy", "Tailwind CSS"],
     overview:
       "PhishGuard is a Flask web application that takes a website URL, cleans the input, transforms it with a saved vectorizer and sends it to a trained phishing classifier. The application then clearly reports whether the URL is classified as phishing or safe.",
@@ -219,11 +264,165 @@ const projects: Project[] = [
     }
   ],
   },
+
+  {
+    id: 2,
+    category: "Finance",
+    type: "FINANCE / ANALYTICS",
+    title: "FundScope India",
+    subtitle: "Mutual Fund NAV Analytics",
+    description:
+      "Mutual fund NAV analytics: CAGR, Sharpe, drawdown and more for 16 schemes. Educational use.",
+    url: "https://fund-scope-india.vercel.app",
+    github: "https://github.com/Keshav062004/FundScope-India",
+    technologies: [
+      { name: "React", type: "react" },
+      { name: "Python", type: "python" },
+      { name: "FastAPI", type: "fastapi" },
+      { name: "SQL", type: "sql" },
+      { name: "Pandas", type: "pandas" },
+      { name: "Power BI", type: "powerbi" },
+    ],
+    accent: "orange",
+    visual: "finance",
+    architecture: {
+      nodes: [
+        { title: "Browser", subtitle: "React frontend", icon: "react" },
+        { title: "FastAPI", subtitle: "Application API", icon: "api" },
+        { title: "SQLite", subtitle: "NAV data + metrics", icon: "database" },
+      ],
+      secondary: [
+        { label: "Firebase Auth", icon: "lock" },
+        { label: "Google Gemini", icon: "star" },
+        { label: "Pandas metrics", icon: "database" },
+        { label: "Render backend", icon: "server" },
+      ],
+    },
+    stack: ["React", "Python", "FastAPI", "SQL", "Pandas", "Power BI"],
+    overview:
+      "FundScope India presents mutual fund NAV history and analytics for 16 schemes, including CAGR, Sharpe ratio, and drawdown metrics. It is an educational analytics project, not investment advice.",
+    features: [
+      "Explore NAV history across 16 mutual fund schemes",
+      "Compare CAGR, Sharpe ratio, and drawdown metrics",
+      "Review historical data spanning 2013–2026",
+      "Use an interactive dashboard for educational analysis",
+    ],
+    highlights: [
+      { title: "NAV analytics", text: "Historical NAV observations power scheme comparisons and return analysis." },
+      { title: "Risk metrics", text: "CAGR, Sharpe ratio, drawdown, and additional risk measures summarize scheme performance." },
+      { title: "Data workflow", text: "A React interface connects to a FastAPI application backed by SQLite and Pandas metrics." },
+    ],
+    next: [],
+    whatsNext: [
+      {
+        title: "Always-on hosting with a custom domain",
+        description:
+          "Move the backend off the free tier so it no longer sleeps, and connect a custom domain for cleaner branding and a more reliable login flow.",
+      },
+      {
+        title: "Automated daily data refresh",
+        description:
+          "Schedule the NAV pipeline to run on its own and log each run's row counts and validation results, so the dataset stays current without manual updates.",
+      },
+      {
+        title: "Broader coverage and comparison tools",
+        description:
+          "Add more schemes and benchmark indices, plus side-by-side comparisons over matched periods, so users can evaluate funds against the same market conditions.",
+      },
+    ],
+    screenshots: [
+      {
+        src: "/project-images/FundScope_India_landingpage.png",
+        label: "Landing page",
+        caption: "FundScope India landing page",
+      },
+      {
+        src: "/project-images/FundScope_India_dashboard.png",
+        label: "NAV dashboard",
+        caption: "Mutual fund NAV analytics dashboard",
+      },
+      {
+        src: "/project-images/FundScope_India_loginpage.png",
+        label: "Login page",
+        caption: "FundScope India sign-in experience",
+      },
+    ],
+  },
 ];
+
+projects.sort((a, b) => a.id - b.id);
 
 const activeIndex = ref(0);
 const detailsProject = ref<Project | null>(null);
 
+const financeCounts = ref({
+  schemes: 0,
+  navRows: 0,
+  historyStart: 0,
+  historyEnd: 0,
+  riskMetrics: 0,
+});
+
+const FINANCE_COUNT_DURATION = 1500;
+const FINANCE_COUNT_CYCLE = FINANCE_COUNT_DURATION + 2000;
+
+let financeCountFrame = 0;
+let financeCountStart: number | null = null;
+let financeMotionQuery: MediaQueryList | null = null;
+
+const updateFinanceCounts = (progress: number) => {
+  financeCounts.value = {
+    schemes: Math.round(16 * progress),
+    navRows: Math.round(42 * progress),
+    historyStart: Math.round(2013 * progress),
+    historyEnd: Math.round(26 * progress),
+    riskMetrics: Math.round(6 * progress),
+  };
+};
+
+const showFinalFinanceCounts = () => {
+  financeCounts.value = {
+    schemes: 16,
+    navRows: 42,
+    historyStart: 2013,
+    historyEnd: 26,
+    riskMetrics: 6,
+  };
+};
+
+const animateFinanceCounts = (timestamp: number) => {
+  if (financeCountStart === null) financeCountStart = timestamp;
+
+  const elapsed = (timestamp - financeCountStart) % FINANCE_COUNT_CYCLE;
+  updateFinanceCounts(Math.min(elapsed / FINANCE_COUNT_DURATION, 1));
+  financeCountFrame = requestAnimationFrame(animateFinanceCounts);
+};
+
+const handleFinanceMotionPreference = (event: MediaQueryListEvent) => {
+  cancelAnimationFrame(financeCountFrame);
+  financeCountStart = null;
+
+  if (event.matches) {
+    showFinalFinanceCounts();
+    return;
+  }
+
+  financeCountFrame = requestAnimationFrame(animateFinanceCounts);
+};
+
+const startFinanceCountAnimation = () => {
+  if (typeof window === "undefined") return;
+
+  financeMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  financeMotionQuery.addEventListener("change", handleFinanceMotionPreference);
+
+  if (financeMotionQuery.matches) {
+    showFinalFinanceCounts();
+    return;
+  }
+
+  financeCountFrame = requestAnimationFrame(animateFinanceCounts);
+};
 
 /* =========================================================
    PROJECT TECHNOLOGY ICONS
@@ -240,6 +439,13 @@ const techIconSvg = (type: string): string => {
     docker: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.2 14.5h17.6c-.8 3.5-3.4 5.4-7.4 5.4H10c-3.7 0-5.8-1.8-6.8-5.4Z" fill="currentColor"/><path d="M5.4 11.2h2.1V9h2.1v2.2h2.1V9h2.1v2.2H16V9h2.1v2.2c1.1-.2 2.1.1 2.8.8-1.3.5-2.2 1.1-2.8 1.9H5.4v-2.7Z" fill="currentColor"/></svg>`,
     github: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8a9.3 9.3 0 0 0-2.9 18.1c.5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.2-3.5-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.3-.3-4.7-1.1-4.7-5 0-1.1.4-2 .9-2.7-.1-.2-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.5.1 2.7.6.7.9 1.6.9 2.7 0 3.9-2.4 4.7-4.7 5 .4.3.7 1 .7 1.9v2.8c0 .3.2.6.7.5A9.3 9.3 0 0 0 12 2.8Z" fill="currentColor"/></svg>`,
     python: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c-3.6 0-3.4 1.6-3.4 1.6v2.3H12v.7H7.3c-2.2 0-3.3 1.3-3.3 3.7s1 3.6 3.3 3.6h1.3v-2.1c0-1.7 1.2-3 3-3h3.8c1.8 0 3.1-1.2 3.1-3V6.2c0-1.8-1.6-3-3.4-3H12Z" fill="currentColor"/><path d="M12 20.8c3.6 0 3.4-1.6 3.4-1.6v-2.3H12v-.7h4.7c2.2 0 3.3-1.3 3.3-3.7s-1-3.6-3.3-3.6h-1.3V11c0 1.7-1.2 3-3 3H8.6c-1.8 0-3.1 1.2-3.1 3v.8c0 1.8 1.6 3 3.4 3H12Z" fill="currentColor" opacity=".62"/></svg>`,
+    fastapi: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 2.8 5 13h5l-.8 8.2L19 10.6h-5.3l-.2-7.8Z" fill="currentColor"/></svg>`,
+    sql: `<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7.5" ry="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 5.5v13c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-13M4.5 10c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3M4.5 14.5c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>`,
+    pandas: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v6m0 4v8M17 3v2m0 4v12M4.5 9h5m5 0h5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="7" cy="11" r="2" fill="currentColor"/><circle cx="17" cy="7" r="2" fill="currentColor"/></svg>`,
+    powerbi: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h4v8H4zM10 8h4v13h-4zM16 3h4v18h-4z" fill="currentColor"/></svg>`,
+    sqlite: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3v10c0 1.7-3.6 3-8 3s-8-1.3-8-3V7Zm0 0c0 1.7 3.6 3 8 3s8-1.3 8-3m-16 5c0 1.7 3.6 3 8 3s8-1.3 8-3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m16 3 3-1-1.2 3.3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`,
+    firebase: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 17 2.7-12a.8.8 0 0 1 1.5-.2l2 3.3 2-4.1a.8.8 0 0 1 1.5.1L19 17l-7 4-7-4Z" fill="currentColor"/><path d="m5 17 6.2-9 1.5 7.1L19 17" fill="none" stroke="white" stroke-width="1.1" stroke-linejoin="round"/></svg>`,
+    gemini: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5c1.1 5.4 4.1 8.4 9.5 9.5-5.4 1.1-8.4 4.1-9.5 9.5-1.1-5.4-4.1-8.4-9.5-9.5 5.4-1.1 8.4-4.1 9.5-9.5Z" fill="currentColor"/></svg>`,
     flask: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6.2L5.5 17a2.5 2.5 0 0 0 2.1 3.8h8.8a2.5 2.5 0 0 0 2.1-3.8L14 9.2V3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.1 16h9.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>`,
     ml: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="18" r="2" fill="currentColor"/><path d="M7.7 10.5 10.3 7.5M13.7 7.5l2.6 3M16.3 13.5l-2.6 3M10.3 16.5l-2.6-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`,
     tailwind: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12c1.3-3.4 3.7-5.1 7.1-5.1 2.2 0 3.8 1.1 4.9 3.2 1.1 2 2.4 3 4.1 3-1.3 3.4-3.7 5.1-7.1 5.1-2.2 0-3.8-1.1-4.9-3.2C7 13 5.7 12 4 12Z" fill="currentColor"/></svg>`,
@@ -740,6 +946,7 @@ const animateVisuals = () => {
 };
 
 onMounted(async () => {
+  startFinanceCountAnimation();
   emit("loaded");
 
   await nextTick();
@@ -987,6 +1194,9 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  cancelAnimationFrame(financeCountFrame);
+  financeMotionQuery?.removeEventListener("change", handleFinanceMotionPreference);
+
   const cards =
     showcaseRef.value?.querySelectorAll(
       ".project-slide"
@@ -1303,6 +1513,8 @@ onUnmounted(() => {
                 `project-${project.accent}`,
                 getCardClass(index),
               ]"
+              :inert="index !== activeIndex"
+              :aria-hidden="index !== activeIndex"
             >
 
               <div class="project-card">
@@ -1433,6 +1645,55 @@ onUnmounted(() => {
                   </div>
 
                   <div
+                    v-else-if="project.visual === 'finance'"
+                    class="security-dashboard finance-dashboard"
+                  >
+                    <div class="security-sidebar finance-sidebar">
+                      <strong>₹</strong>
+                      <i></i>
+                      <i></i>
+                      <i></i>
+                      <i></i>
+                    </div>
+
+                    <div class="security-main finance-main">
+                      <div class="security-title finance-title">
+                        NAV Analytics
+                      </div>
+
+                      <div class="threat-number finance-schemes">
+                        {{ financeCounts.schemes }} Schemes
+                      </div>
+
+                      <div class="finance-stats">
+                        <div>
+                          <b>{{ financeCounts.navRows }}K+</b>
+                          <small>NAV rows</small>
+                        </div>
+                        <div>
+                          <b>{{ financeCounts.historyStart }}–{{ financeCounts.historyEnd }}</b>
+                          <small>History</small>
+                        </div>
+                        <div>
+                          <b>{{ financeCounts.riskMetrics }}</b>
+                          <small>Risk metrics</small>
+                        </div>
+                      </div>
+
+                      <svg
+                        class="finance-chart"
+                        viewBox="0 0 220 54"
+                        preserveAspectRatio="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M0 43 L20 37 L38 39 L56 28 L74 32 L94 20 L112 24 L132 13 L151 19 L171 9 L192 15 L220 4"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+
+                  <div
                     v-else
                     class="security-dashboard"
                   >
@@ -1494,6 +1755,12 @@ onUnmounted(() => {
                     "
                   >
                     ♡
+                  </span>
+
+                  <span
+                    v-else-if="project.visual === 'finance'"
+                  >
+                    ₹
                   </span>
 
                   <span v-else>
@@ -1600,9 +1867,11 @@ onUnmounted(() => {
         <div class="carousel-dots">
 
           <button
-            v-for="(_, index) in projects"
-            :key="index"
+            v-for="(project, index) in projects"
+            :key="project.id"
             type="button"
+            :aria-label="`Show ${project.title}`"
+            :aria-current="activeIndex === index ? 'true' : undefined"
             :class="{
               active:
                 activeIndex === index,
@@ -2713,6 +2982,87 @@ onUnmounted(() => {
   background:#171315;
 }
 
+.finance-dashboard {
+  background:
+    radial-gradient(
+      circle at 84% 12%,
+      rgba(255,138,0,0.12),
+      transparent 42%
+    ),
+    #171513;
+}
+
+.finance-sidebar strong,
+.finance-title {
+  color:#ff9b35;
+}
+
+.finance-main {
+  padding:12px 14px;
+}
+
+.finance-schemes {
+  margin-top:3px;
+  font-size:17px;
+}
+
+.finance-stats {
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:5px;
+  margin-top:7px;
+}
+
+.finance-stats div {
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  padding:5px 6px;
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:5px;
+  background:rgba(255,255,255,0.025);
+}
+
+.finance-stats b {
+  color:#fff;
+  font-size:8px;
+}
+
+.finance-stats small {
+  color:rgba(255,255,255,0.4);
+  font-size:5px;
+}
+
+.finance-chart {
+  display:block;
+  width:100%;
+  height:39px;
+  margin-top:5px;
+  overflow:visible;
+}
+
+.finance-chart path {
+  fill:none;
+  stroke:#ff9638;
+  stroke-width:2.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:320;
+  stroke-dashoffset:320;
+  filter:drop-shadow(0 0 4px rgba(255,150,56,0.55));
+  animation:financeChartLoop 7s ease-in-out infinite;
+}
+
+@keyframes financeChartLoop {
+  0%, 20%, 85%, 100% {
+    stroke-dashoffset:320;
+  }
+
+  40%, 65% {
+    stroke-dashoffset:0;
+  }
+}
+
 .security-sidebar {
   width:50px;
 
@@ -3112,6 +3462,13 @@ onUnmounted(() => {
 .tech-postgres { color:#336791; }
 .tech-jwt { color:#e19b22; }
 .tech-aws { color:#e17b00; }
+.tech-fastapi { color:#009688; }
+.tech-sql { color:#e68a00; }
+.tech-pandas { color:#7563b5; }
+.tech-powerbi { color:#e5a900; }
+.tech-sqlite { color:#287ab3; }
+.tech-firebase { color:#f0a000; }
+.tech-gemini { color:#6688d8; }
 
 .project-footer {
   position:absolute;
@@ -3140,7 +3497,8 @@ onUnmounted(() => {
 
   gap:5px;
 
-  min-height:32px;
+  min-height:44px;
+  min-width:44px;
 
   border:none;
 
@@ -3208,7 +3566,9 @@ onUnmounted(() => {
   position:absolute;
   top:50%;
   width:54px;
+  min-width:44px;
   height:54px;
+  min-height:44px;
   margin:0;
   padding:0;
 
@@ -3476,8 +3836,11 @@ onUnmounted(() => {
 }
 
 .carousel-dots button {
-  width:8px;
-  height:8px;
+  display:grid;
+  place-items:center;
+  width:44px;
+  min-width:44px;
+  height:44px;
 
   padding:0;
 
@@ -3485,8 +3848,7 @@ onUnmounted(() => {
 
   border-radius:50%;
 
-  background:
-    #d5cbbb;
+  background:transparent;
 
   cursor:pointer;
 
@@ -3494,17 +3856,27 @@ onUnmounted(() => {
     all 0.25s ease;
 }
 
+.carousel-dots button::before {
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#d5cbbb;
+  transition:all 0.25s ease;
+}
+
 .carousel-dots button.active {
+  width:44px;
+  border-radius:50%;
+  background:transparent;
+  box-shadow:none;
+}
+
+.carousel-dots button.active::before {
   width:24px;
-
   border-radius:999px;
-
-  background:
-    var(--orange);
-
-  box-shadow:
-    0 0 10px
-    rgba(255,138,0,0.35);
+  background:var(--orange);
+  box-shadow:0 0 10px rgba(255,138,0,0.35);
 }
 
 .floating-cube {
@@ -3811,8 +4183,8 @@ onUnmounted(() => {
   }
 
   .carousel-arrow {
-    width:40px;
-    height:40px;
+    width:44px;
+    height:44px;
   }
 
   .carousel-arrow-left {
@@ -3933,6 +4305,11 @@ onUnmounted(() => {
 
     transition-duration:
       0.01ms !important;
+  }
+
+  .finance-chart path {
+    animation:none;
+    stroke-dashoffset:0;
   }
 }
 </style>

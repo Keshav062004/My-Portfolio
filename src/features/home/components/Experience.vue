@@ -6,12 +6,58 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const experienceRef = ref<HTMLElement | null>(null);
-const cardRef = ref<HTMLElement | null>(null);
-const dateRef = ref<HTMLElement | null>(null);
-const timelineProgressRef = ref<HTMLElement | null>(null);
-const timelineDotRef = ref<HTMLElement | null>(null);
+const failedLogos = ref<Set<string>>(new Set());
+
+type Experience = {
+  role: string;
+  company: string;
+  location: string;
+  dates: string;
+  logo: string;
+  logoAlt: string;
+  description: string;
+  points: string[];
+};
+
+const experiences: Experience[] = [
+  {
+    role: "Cloud Consultant",
+    company: "Mist Avinya Technologies LLP",
+    location: "Noida, India",
+    dates: "DEC 2025 — JUNE 2026",
+    logo: "/images/mist-avinya-logo.png",
+    logoAlt: "Mist Avinya Technologies logo",
+    description:
+      "Worked with businesses to understand their cloud requirements and identify suitable AWS solutions, supporting client communication, requirement analysis, cloud POCs, and AWS-related opportunities.",
+    points: [
+      "Client requirement research and analysis",
+      "AWS cloud solution identification",
+      "AWS-funded POCs and cloud credits",
+      "Cloud cost optimization opportunities",
+      "Lead qualification and client communication",
+      "Coordination with senior AWS consultants",
+    ],
+  },
+  {
+    role: "Front End Intern",
+    company: "CertifyIX",
+    location: "Delhi, India (Remote)",
+    dates: "JULY 2026 — Ongoing",
+    logo: "/images/certifyix-logo.png",
+    logoAlt: "CertifyIX logo",
+    description:
+      "Built and maintained responsive front-end interfaces for web applications, working with a team to deliver reusable React components and clean, user-friendly pages.",
+    points: [
+      "Developed and maintained responsive web interfaces using HTML, CSS, and JavaScript",
+      "Built reusable UI components and dynamic web pages using React.js",
+      "Collaborated with the team to implement new features and enhance existing functionality",
+      "Debugged and tested web applications for clean, responsive, user-friendly interfaces",
+    ],
+  },
+];
 
 let ctx: gsap.Context | null = null;
+const hoverCleanup: (() => void)[] = [];
 
 onMounted(() => {
   if (!experienceRef.value) return;
@@ -29,12 +75,27 @@ onMounted(() => {
         ".experience-heading h2"
       );
 
-    const card = cardRef.value;
-    const date = dateRef.value;
-    const progress = timelineProgressRef.value;
-    const dot = timelineDotRef.value;
+    const cards = Array.from(
+      section.querySelectorAll<HTMLElement>(".experience-card")
+    );
+    const dates = Array.from(
+      section.querySelectorAll<HTMLElement>(".experience-date")
+    );
+    const dots = Array.from(
+      section.querySelectorAll<HTMLElement>(".experience-line-dot")
+    );
+    const progress = section.querySelector<HTMLElement>(
+      ".experience-line-progress"
+    );
 
-    if (!eyebrow || !title || !card || !date || !progress || !dot) {
+    if (
+      !eyebrow ||
+      !title ||
+      !progress ||
+      cards.length !== experiences.length ||
+      dates.length !== experiences.length ||
+      dots.length !== experiences.length
+    ) {
       return;
     }
 
@@ -54,7 +115,7 @@ onMounted(() => {
       transformPerspective: 1000,
     });
 
-    gsap.set(card, {
+    gsap.set(cards, {
       opacity: 0,
       x: -120,
       rotateY: 7,
@@ -62,7 +123,7 @@ onMounted(() => {
       transformOrigin: "center center",
     });
 
-    gsap.set(date, {
+    gsap.set(dates, {
       opacity: 0,
       x: 100,
       rotateY: -8,
@@ -74,7 +135,7 @@ onMounted(() => {
       transformOrigin: "top center",
     });
 
-    gsap.set(dot, {
+    gsap.set(dots, {
       scale: 0,
       opacity: 0,
     });
@@ -119,124 +180,98 @@ onMounted(() => {
       scrollTrigger: {
         trigger: ".experience-wrapper",
         start: "top 75%",
-        end: "top 25%",
+        end: "bottom 60%",
         scrub: 1.2,
       },
     });
-
-    /*
-      Timeline draws down
-    */
 
     experienceTimeline.to(
       progress,
       {
         scaleY: 1,
-        duration: 1,
+        duration: Math.max(1, experiences.length * 0.5 + 0.45),
         ease: "none",
       },
       0
     );
 
-    /*
-      Timeline dot appears
-    */
+    cards.forEach((card, index) => {
+      const date = dates[index];
+      const dot = dots[index];
+      if (!date || !dot) return;
+      const offset = index * 0.5;
 
-    experienceTimeline.to(
-      dot,
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 0.3,
-        ease: "back.out(2)",
-      },
-      0.05
-    );
+      experienceTimeline
+        .to(
+          dot,
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.3,
+            ease: "back.out(2)",
+          },
+          0.05 + offset
+        )
+        .to(
+          card,
+          {
+            opacity: 1,
+            x: 0,
+            rotateY: 0,
+            duration: 0.75,
+            ease: "power3.out",
+          },
+          0.12 + offset
+        )
+        .to(
+          date,
+          {
+            opacity: 1,
+            x: 0,
+            rotateY: 0,
+            duration: 0.65,
+            ease: "power3.out",
+          },
+          0.3 + offset
+        );
 
-    /*
-      Card comes from left
-    */
+      ScrollTrigger.create({
+        trigger: dot,
+        start: "top 65%",
+        end: "bottom 40%",
+        onEnter: () => {
+          gsap.to(dot, {
+            boxShadow: `
+              0 0 0 7px rgba(255,138,0,0.12),
+              0 0 35px rgba(255,138,0,0.55)
+            `,
+            duration: 0.5,
+            ease: "power2.out",
+          });
+        },
+        onLeaveBack: () => {
+          gsap.to(dot, {
+            boxShadow: `
+              0 0 0 7px rgba(255,138,0,0.08),
+              0 0 20px rgba(255,138,0,0.25)
+            `,
+            duration: 0.4,
+          });
+        },
+      });
 
-    experienceTimeline.to(
-      card,
-      {
-        opacity: 1,
-        x: 0,
-        rotateY: 0,
-        duration: 0.75,
-        ease: "power3.out",
-      },
-      0.12
-    );
-
-    /*
-      Date comes from right
-    */
-
-    experienceTimeline.to(
-      date,
-      {
-        opacity: 1,
-        x: 0,
-        rotateY: 0,
-        duration: 0.65,
-        ease: "power3.out",
-      },
-      0.3
-    );
-
-    /* =====================================================
-       TIMELINE GLOW
-    ===================================================== */
-
-    ScrollTrigger.create({
-      trigger: ".experience-wrapper",
-      start: "top 65%",
-      end: "bottom 40%",
-
-      onEnter: () => {
-        gsap.to(dot, {
-          boxShadow: `
-            0 0 0 7px rgba(255,138,0,0.12),
-            0 0 35px rgba(255,138,0,0.55)
-          `,
-          duration: 0.5,
-          ease: "power2.out",
-        });
-      },
-
-      onLeaveBack: () => {
-        gsap.to(dot, {
-          boxShadow: `
-            0 0 0 7px rgba(255,138,0,0.08),
-            0 0 20px rgba(255,138,0,0.25)
-          `,
-          duration: 0.4,
-        });
-      },
-    });
-
-    /* =====================================================
-       CARD 3D HOVER
-    ===================================================== */
-
-    const cardContent =
-      card.querySelector<HTMLElement>(
+      const cardContent = card.querySelector<HTMLElement>(
         ".experience-card-content"
       );
 
-    if (cardContent) {
+      if (!cardContent) return;
+
       const handleMouseMove = (event: MouseEvent) => {
         const rect = card.getBoundingClientRect();
-
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
-
-        const rotateY =
-          ((mouseX / rect.width) - 0.5) * 5;
-
-        const rotateX =
-          ((mouseY / rect.height) - 0.5) * -5;
+        const rotateY = (mouseX / rect.width - 0.5) * 5;
+        const rotateX = (mouseY / rect.height - 0.5) * -5;
 
         gsap.to(cardContent, {
           rotateX,
@@ -258,28 +293,13 @@ onMounted(() => {
         });
       };
 
-      card.addEventListener(
-        "mousemove",
-        handleMouseMove
-      );
-
-      card.addEventListener(
-        "mouseleave",
-        handleMouseLeave
-      );
-
-      onUnmounted(() => {
-        card.removeEventListener(
-          "mousemove",
-          handleMouseMove
-        );
-
-        card.removeEventListener(
-          "mouseleave",
-          handleMouseLeave
-        );
+      card.addEventListener("mousemove", handleMouseMove);
+      card.addEventListener("mouseleave", handleMouseLeave);
+      hoverCleanup.push(() => {
+        card.removeEventListener("mousemove", handleMouseMove);
+        card.removeEventListener("mouseleave", handleMouseLeave);
       });
-    }
+    });
 
     /* =====================================================
        REFRESH SCROLLTRIGGER
@@ -292,6 +312,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  hoverCleanup.forEach((cleanup) => cleanup());
+  hoverCleanup.length = 0;
   ctx?.revert();
   ctx = null;
 });
@@ -329,195 +351,115 @@ onUnmounted(() => {
 
       <div class="experience-line">
 
-        <div
-          ref="timelineProgressRef"
-          class="experience-line-progress"
-        ></div>
-
-        <div
-          ref="timelineDotRef"
-          class="experience-line-dot"
-        ></div>
+        <div class="experience-line-progress"></div>
 
       </div>
 
-      <!-- =================================================
-           EXPERIENCE CARD
-      ================================================== -->
-
-      <article
-        ref="cardRef"
-        class="experience-card"
+      <div
+        v-for="experience in experiences"
+        :key="experience.company"
+        class="experience-item"
       >
-        <div class="experience-card-glow"></div>
+        <div class="experience-line-dot"></div>
 
-        <div class="experience-card-content">
+        <article class="experience-card">
+          <div class="experience-card-glow"></div>
 
-          <!-- HEADER -->
+          <div class="experience-card-content">
+            <div class="experience-card-header">
+              <div class="experience-role">
+                <img
+                  v-if="!failedLogos.has(experience.company)"
+                  class="experience-logo"
+                  :src="experience.logo"
+                  :alt="experience.logoAlt"
+                  loading="lazy"
+                  @error="failedLogos.add(experience.company)"
+                />
+                <div v-else class="experience-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
+                    <circle
+                      cx="12"
+                      cy="7"
+                      r="4"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    />
+                  </svg>
+                </div>
 
-          <div class="experience-card-header">
-
-            <div class="experience-role">
-
-              <div class="experience-icon">
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                  />
-
-                  <circle
-                    cx="12"
-                    cy="7"
-                    r="4"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  />
-                </svg>
-
+                <div>
+                  <h3>{{ experience.role }}</h3>
+                  <h4>{{ experience.company }}</h4>
+                  <p class="experience-location">{{ experience.location }}</p>
+                </div>
               </div>
-
-              <div>
-
-                <h3>
-                  Cloud Consultant
-                </h3>
-
-                <h4>
-                  Mist Avinya Technologies LLP
-                </h4>
-
-                <p class="experience-location">
-                  Noida, India
-                </p>
-
-              </div>
-
             </div>
 
+            <div class="experience-divider"></div>
+
+            <p class="experience-description">
+              {{ experience.description }}
+            </p>
+
+            <ul class="experience-list">
+              <li v-for="point in experience.points" :key="point">
+                {{ point }}
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <div class="experience-date">
+          <div class="experience-date-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="3"
+                y="4"
+                width="18"
+                height="17"
+                rx="2"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+              <path
+                d="M16 2V6"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <path
+                d="M8 2V6"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <path
+                d="M3 10H21"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+            </svg>
           </div>
 
-          <!-- DIVIDER -->
-
-          <div class="experience-divider"></div>
-
-          <!-- DESCRIPTION -->
-
-          <p class="experience-description">
-            Worked with businesses to understand their
-            cloud requirements and identify suitable AWS
-            solutions, supporting client communication,
-            requirement analysis, cloud POCs, and
-            AWS-related opportunities.
-          </p>
-
-          <!-- RESPONSIBILITIES -->
-
-          <ul class="experience-list">
-
-            <li>
-              Client requirement research and analysis
-            </li>
-
-            <li>
-              AWS cloud solution identification
-            </li>
-
-            <li>
-              AWS-funded POCs and cloud credits
-            </li>
-
-            <li>
-              Cloud cost optimization opportunities
-            </li>
-
-            <li>
-              Lead qualification and client communication
-            </li>
-
-            <li>
-              Coordination with senior AWS consultants
-            </li>
-
-          </ul>
-
+          <div class="experience-date-text">
+            <strong>{{ experience.dates }}</strong>
+          </div>
         </div>
-      </article>
-
-      <!-- =================================================
-           DATE
-      ================================================== -->
-
-      <div
-        ref="dateRef"
-        class="experience-date"
-      >
-
-        <div class="experience-date-icon">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-
-            <rect
-              x="3"
-              y="4"
-              width="18"
-              height="17"
-              rx="2"
-              stroke="currentColor"
-              stroke-width="1.8"
-            />
-
-            <path
-              d="M16 2V6"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-            />
-
-            <path
-              d="M8 2V6"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-            />
-
-            <path
-              d="M3 10H21"
-              stroke="currentColor"
-              stroke-width="1.8"
-            />
-
-          </svg>
-
-        </div>
-
-        <div class="experience-date-text">
-
-          <strong>
-            DEC 2025
-          </strong>
-
-          <span>
-            —
-          </span>
-
-          <strong>
-            JUNE 2026
-          </strong>
-
-        </div>
-
       </div>
 
     </div>
@@ -618,19 +560,21 @@ onUnmounted(() => {
       100%
     );
 
-  min-height: 600px;
-
   margin: 0 auto;
 
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  gap: 90px;
+}
 
+.experience-item {
+  position: relative;
+  display: grid;
   grid-template-columns:
     minmax(0, 1fr)
     70px
     minmax(280px, 0.45fr);
-
   column-gap: 35px;
-
   align-items: start;
 }
 
@@ -713,7 +657,10 @@ onUnmounted(() => {
 
   top: 0;
 
-  left: 50%;
+  left:
+    calc(
+      69% + 35px
+    );
 
   width: 22px;
   height: 22px;
@@ -876,6 +823,17 @@ onUnmounted(() => {
     rgba(255, 138, 0, 0.08);
 }
 
+.experience-logo {
+  flex: 0 0 54px;
+  width: 54px;
+  height: 54px;
+  padding: 6px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(255, 138, 0, 0.12);
+  object-fit: contain;
+}
+
 .experience-icon svg {
   width: 27px;
   height: 27px;
@@ -1029,24 +987,9 @@ onUnmounted(() => {
 ===================================================== */
 
 .experience-date {
-  position: absolute;
-
-  /*
-    Keep the date to the RIGHT
-    of the timeline.
-  */
-
-  left:
-    calc(
-      69% + 85px
-    );
-
-  /*
-    Vertically align it
-    with the card.
-  */
-
-  top: 38px;
+  position: relative;
+  grid-column: 3;
+  margin-top: 38px;
 
   display: flex;
 
@@ -1224,14 +1167,14 @@ onUnmounted(() => {
 
   .experience-wrapper {
     width: 100%;
+  }
 
+  .experience-item {
     grid-template-columns:
       minmax(0, 1fr)
       55px
       minmax(230px, 0.42fr);
-
-    column-gap:
-      20px;
+    column-gap: 20px;
   }
 
   .experience-line {
@@ -1239,15 +1182,12 @@ onUnmounted(() => {
       68%;
   }
 
+  .experience-line-dot {
+    left: 68%;
+  }
+
   .experience-date {
-    left:
-      calc(
-        68% + 55px
-      );
-
-    top:
-      38px;
-
+    margin-top: 38px;
     padding:
       15px 18px;
   }
@@ -1300,14 +1240,21 @@ onUnmounted(() => {
     display:
       block;
 
-    min-height:
-      auto;
-
     width:
       100%;
 
     padding-left:
       30px;
+  }
+
+  .experience-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .experience-item + .experience-item {
+    margin-top: 90px;
   }
 
 
@@ -1331,8 +1278,7 @@ onUnmounted(() => {
   }
 
   .experience-line-dot {
-    left:
-      50%;
+    left: -20px;
 
     width:
       18px;
@@ -1423,12 +1369,6 @@ onUnmounted(() => {
     position:
       relative;
 
-    left:
-      auto;
-
-    top:
-      auto;
-
     display:
       inline-flex;
 
@@ -1491,6 +1431,10 @@ onUnmounted(() => {
   .experience-wrapper {
     padding-left:
       25px;
+  }
+
+  .experience-line-dot {
+    left: -14px;
   }
 
   .experience-card {

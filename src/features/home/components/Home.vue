@@ -331,7 +331,6 @@ watch(
       ================================================= -->
 
       <Projects
-        id="projects"
         @loaded="handleProjectsLoaded"
       />
 
