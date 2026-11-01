@@ -107,7 +107,7 @@ const handleTimelineCreated = (timeline: gsap.core.Timeline, delay: number) => {
 };
 
 const SERVICES_EN = [
-  { name: "Java & Python & Data Analysis" },
+  { name: "Python & Data Analysis" },
   { name: "SQL & Databases" },
   { name: "Power BI & Dashboards" },
   { name: "JavaScript & React" },

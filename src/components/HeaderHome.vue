@@ -16,8 +16,10 @@ type ActiveLink =
   | "about"
   | "education"
   | "certifications"
+  | "skills"
   | "experience"
   | "projects"
+  | "achievements"
   | "contact";
 
 const activeLink = ref<ActiveLink | null>(null);
@@ -26,17 +28,21 @@ const sections: ActiveLink[] = [
   "about",
   "education",
   "certifications",
+  "skills",
   "experience",
   "projects",
+  "achievements",
   "contact",
 ];
 
-const ariaLabels = {
+const ariaLabels: Record<ActiveLink, string> = {
   about: t("about"),
   education: "Education",
   certifications: "Certifications",
   experience: "Experience",
   projects: t("projects"),
+  skills: "Skills",
+  achievements: "Achievements",
   contact: t("contact"),
 };
 
@@ -246,13 +252,13 @@ onUnmounted(() => {
         data-hoversound="hover"
       >
         {{
-          section === "education"
-            ? "Education"
-            : section === "certifications"
-              ? "Certifications"
-              : section === "experience"
-                ? "Experience"
-                : t(section)
+          section === "education" ||
+          section === "certifications" ||
+          section === "experience" ||
+          section === "skills" ||
+          section === "achievements"
+            ? ariaLabels[section]
+            : t(section)
         }}
       </HeaderLink>
 
@@ -300,7 +306,7 @@ onUnmounted(() => {
     opacity: 1;
   }
 
-  @include mixins.mq("lg") {
+  @media (min-width: 1200px) {
     display: flex;
   }
 
@@ -314,6 +320,9 @@ onUnmounted(() => {
     display: flex;
 
     align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
 
     padding: 5px;
 
@@ -349,6 +358,15 @@ onUnmounted(() => {
       color 0.2s ease-in-out,
       background-color 0.2s ease-in-out,
       box-shadow 0.2s ease-in-out;
+  }
+
+  .header-home-links :deep(.header-home-link) {
+    width: auto;
+    min-width: 0;
+    flex: 0 0 auto;
+    padding-inline: clamp(5px, 0.55vw, 8px);
+    font-size: clamp(0.72rem, 0.8vw, 0.85rem);
+    white-space: nowrap;
   }
 
   /* =========================================

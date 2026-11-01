@@ -478,7 +478,7 @@ onUnmounted(() => {
   width: 100%;
 
   padding:
-    120px
+    0
     var(--space-outer)
     160px;
 
@@ -1212,7 +1212,7 @@ onUnmounted(() => {
 
   .experience {
     padding:
-      80px
+      0
       20px
       110px;
   }

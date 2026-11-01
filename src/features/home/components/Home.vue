@@ -6,6 +6,8 @@ import Education from "./Education.vue";
 import Certifications from "./Certifications.vue";
 import Experience from "./Experience.vue";
 import Projects from "./Projects.vue";
+import Skills from "./Skills.vue";
+import Achievements from "./Achievements.vue";
 import Contact from "./Contact.vue";
 import Footer from "../../../components/Footer.vue";
 
@@ -247,6 +249,12 @@ watch(
         ref="introRef"
       >
 
+        <!-- Hero -->
+        <Hero
+          class="intro-hero"
+          id="hero"
+        />
+
         <!-- Sticky Three.js / About -->
         <div
           class="intro-sticky"
@@ -282,12 +290,6 @@ watch(
 
         </div>
 
-        <!-- Hero -->
-        <Hero
-          class="intro-hero"
-          id="hero"
-        />
-
         <!-- Desktop spacer -->
         <div
           class="intro-wrapper-spacer"
@@ -302,29 +304,18 @@ watch(
 
       </div>
       <!-- =================================================
-     EDUCATION
-================================================= -->
+           EDUCATION
+      ================================================= -->
 
       <Education
-         id="education"
-      />
-  <!-- =================================================
-           CERTIFICATIONS
-
-      ================================================= -->
-
-      <Certifications
-        id="certifications"
+        id="education"
       />
 
-      <!-- =================================================
-           EXPERIENCE
-      ================================================= -->
+      <Certifications id="certifications" />
 
-      <Experience
-        id="experience"
-      />
+      <Skills />
 
+      <Experience id="experience" />
 
       <!-- =================================================
            PROJECTS
@@ -334,6 +325,7 @@ watch(
         @loaded="handleProjectsLoaded"
       />
 
+      <Achievements />
 
       <!-- =================================================
            CONTACT

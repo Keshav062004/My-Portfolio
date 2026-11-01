@@ -92,12 +92,13 @@ const resumeButtonClassNames = computed(() => {
 
 const mobileMenuOpen = ref(false);
 const mobileSections = [
-  { label: "Home", target: "hero" },
   { label: "About", target: "about" },
   { label: "Education", target: "education" },
-  { label: "Projects", target: "projects" },
+  { label: "Certifications", target: "certifications" },
+  { label: "Skills", target: "skills" },
   { label: "Experience", target: "experience" },
-  { label: "Certificates", target: "certifications" },
+  { label: "Projects", target: "projects" },
+  { label: "Achievements", target: "achievements" },
   { label: "Contact", target: "contact" },
 ];
 const activeMobileSection = ref("hero");
@@ -116,7 +117,8 @@ onMounted(() => {
     if (visible?.target instanceof HTMLElement) activeMobileSection.value = visible.target.id;
   }, { rootMargin: "-38% 0px -48%", threshold: [0.1, 0.35, 0.65] });
 
-  ["hero", "about", "education", "projects", "experience", "certifications", "contact"]
+  mobileSections
+    .map(({ target }) => target)
     .map((id) => document.getElementById(id))
     .filter((element): element is HTMLElement => Boolean(element))
     .forEach((element) => mobileSectionObserver?.observe(element));
@@ -832,7 +834,7 @@ onUnmounted(() => mobileSectionObserver?.disconnect());
   display: none;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   .header {
     display: grid;
     grid-template-columns: 44px minmax(0, 1fr) minmax(0, auto);

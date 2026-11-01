@@ -41,7 +41,7 @@ const props = defineProps<{
     var(--font-size-md);
 
   width:
-    128px;
+    auto;
 
   white-space:
     nowrap;
