@@ -8,7 +8,7 @@ Personal portfolio featuring selected software projects, certifications, and con
 
 ## License attribution
 
-The original portfolio template was created by David Heckhoff: [david-hckh.com](https://david-hckh.com). This attribution is retained as required by the project's license. See [license.md](./license.md) for the applicable terms.
+The original portfolio template was created by Keshav Gupta: (https://portfoliioo-xi.vercel.app/). This attribution is retained as required by the project's license. See [license.md](./license.md) for the applicable terms.
 
 Built with **Vue 3**, **TypeScript**, and **Vite**. Animation uses **GSAP** and **Lenis**, 3D graphics use **three.js**, audio uses **Howler**, and GLSL is compiled through **vite-plugin-glsl**.
 
